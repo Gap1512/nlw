@@ -1,0 +1,35 @@
+
+// Rota: Endereço completo da requisição
+// Recurso: Qual entidade estamos acessando do sistema
+
+// GET: Buscar uma ou mais informações do Back-end
+// POST: Criar uma nova informação no Back-end
+// PUT: Atualizar uma informação existente no Back-end
+// DELETE: Removar uma informação do Back-end
+
+// Request Param: Parâmetros contidos na rota que identificam um recurso
+// Query Param: Parâmetros contidos na rota geralmente opcionais
+// Request Body: Parâmetros para criação/atualização de informações
+
+// SELECT * FROM users WHERE name = 'Diego'
+// knex('users').where('name', 'Diego').select('*')
+
+app.get('/users', (request, response) => {
+    const search = String(request.query.search);
+    return response.json(
+        search ? users.filter(user => user.includes(search)) : users
+    )
+});
+
+app.get('/users/:id', (request, response) => {
+    return response.json(users[Number(request.params.id)]);
+})
+
+app.post('/users', (request, response) => {
+    const data = request.body;
+
+    return response.json({
+        name: data.name,
+        email: data.email
+    })
+})
